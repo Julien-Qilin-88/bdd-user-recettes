@@ -1,0 +1,25 @@
+{
+  "name": "bdd-user-recettes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Julien-Qilin-88/bdd-user-recettes.git",
+  "author": "Julien-Qilin-88 <112284313+juju88dev@users.noreply.github.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.32.1",
+    "validator": "^13.11.0"
+  }
+}

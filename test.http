@@ -1,0 +1,24 @@
+### router user
+GET http://localhost:3001/user/
+
+###
+
+POST http://localhost:3001/user/inscription
+Content-Type: application/json
+
+{
+  "name": "user1",
+  "password": "Louislucie1997.",
+  "email": "toto@toto.fr"
+}
+
+###
+
+POST http://localhost:3001/user/connexion
+
+Content-Type: application/json
+
+{
+  "name": "user1",
+  "password": "Louislucie1997."
+}
