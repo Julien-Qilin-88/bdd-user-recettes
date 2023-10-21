@@ -7,9 +7,10 @@ POST http://localhost:3001/user/inscription
 Content-Type: application/json
 
 {
-  "name": "user1",
+  "name": "admin",
   "password": "Louislucie1997.",
   "email": "toto@toto.fr"
+
 }
 
 ###
@@ -22,3 +23,28 @@ Content-Type: application/json
   "name": "user1",
   "password": "Louislucie1997."
 }
+
+### supprimer un user
+
+DELETE http://localhost:3001/user/delete/1
+
+### mise à jour d'un user en admin
+
+PUT http://localhost:3001/user/changerole/3
+Content-Type: application/json
+
+{
+    "role": "admin"
+}
+
+### essayer de se connecter
+
+POST http://localhost:3001/user/connexion
+Content-Type: application/json
+
+{
+  "name": "user",
+  "password": "Louislucie1997."
+}
+
+

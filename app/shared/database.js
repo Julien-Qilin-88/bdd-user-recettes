@@ -27,13 +27,13 @@ export const UserRecette = sequelize.define('Recette', {
         validate: {
             isEmail: true
         }
-    }
-}, {
-    hooks: {
-        beforeCreate: async (userRecette, options) => {
-            const saltRounds = 10; // Vous pouvez ajuster le nombre de tours selon vos besoins
-            const hashedPassword = await bcrypt.hash(userRecette.password, saltRounds);
-            userRecette.password = hashedPassword;
+    },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'user', // Par défaut, le rôle est défini à "user"
+        validate: {
+            isIn: [['user', 'admin']] // Seuls les rôles "user" et "admin" sont acceptés
         }
     }
 });
