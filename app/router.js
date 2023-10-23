@@ -1,6 +1,7 @@
 import express from 'express';
 import * as userController from './controllers/userController.js';
 import authMiddleware from './middlewares/authMiddleware.js';
+import authorizationMiddleware from './middlewares/authorizationMiddleware.js';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.use(authMiddleware);
 
 // User router
 
-router.get('/', userController.getAllUsers);
+router.get('/allUsers', authorizationMiddleware('admin'), userController.getAllUsers);
 
 router.post('/inscription', userController.postUser);
 
@@ -22,7 +23,7 @@ router.delete('/delete/:id', userController.deleteUser);
 
 router.put('/changerole/:userId', userController.changeRole);
 
-router.put('/:userId/email', userController.updateUserEmail);
-router.put('/:userId/password', userController.updateUserPassword);
+router.put('/email/:userId', userController.updateUserEmail);
+router.put('/password/:userId', userController.updateUserPassword);
 
 export default router;

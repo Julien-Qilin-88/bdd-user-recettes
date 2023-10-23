@@ -1,5 +1,5 @@
 ### router user
-GET http://localhost:3001/user/
+GET http://localhost:3001/user/allUsers
 
 ###
 
@@ -7,9 +7,9 @@ POST http://localhost:3001/user/inscription
 Content-Type: application/json
 
 {
-  "name": "admin",
+  "name": "user1",
   "password": "Louislucie1997.",
-  "email": "toto@toto.fr"
+  "email": "2toto@toto.fr"
 
 }
 
@@ -26,7 +26,12 @@ Content-Type: application/json
 
 ### supprimer un user
 
-DELETE http://localhost:3001/user/delete/1
+DELETE http://localhost:3001/user/delete/53
+Content-Type: application/json
+
+{
+  "password": "Louislucie1997."
+}
 
 ### mise à jour d'un user en admin
 

@@ -19,7 +19,10 @@ app.use(bodyParser.json());
 
 // Configuration du middleware CORS pour autoriser uniquement l'origine http://localhost:3000
 const corsOptions = {
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Authorization,Content-Type',
+    optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 

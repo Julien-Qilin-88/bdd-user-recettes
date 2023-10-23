@@ -21,24 +21,49 @@ export const getAllUsers = async function (req, res) {
 }
 
 export const postUser = async function (req, res) {
-    // Utilisez bcrypt pour hasher le mot de passe
-    const { name, password, email, role } = req.body;
+    // Extrayez les données de la requête
+    const { name, password, email } = req.body;
+
     try {
-        // Générez un sel pour le hachage (le coût de 10 est une bonne pratique)
+        // Vérifiez si l'utilisateur avec le même nom existe déjà en BDD
+        const userWithSameName = await UserRecette.findOne({
+            where: {
+                name: name
+            }
+        });
+
+        // Vérifiez si l'utilisateur avec le même email existe déjà en BDD
+        const userWithSameEmail = await UserRecette.findOne({
+            where: {
+                email: email
+            }
+        });
+
+        // Si l'utilisateur avec le même nom ou le même email existe, renvoyez une réponse d'erreur
+        if (userWithSameName) {
+            return res.status(400).json({ message: 'Ce nom d\'utilisateur est déjà utilisé par un autre utilisateur.' });
+        }
+
+        if (userWithSameEmail) {
+            return res.status(400).json({ message: 'Cette adresse e-mail est déjà utilisée par un autre utilisateur.' });
+        }
+
+        // Si le nom et l'email ne sont pas déjà utilisés, hachez le mot de passe et créez l'utilisateur
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const user = await UserRecette.create({
+            name: name,
+            password: hashedPassword,
+            email: email
+        });
 
-        // Créez un nouvel utilisateur avec le mot de passe haché
-        const user = await UserRecette.create({ name, password: hashedPassword, email });
-
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '3d' });
-
-        res.json({ user, token });
+        res.json(user);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur' });
+        res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur.' });
     }
 }
+
 
 export const loginUser = async function (req, res) {
     const { name, password } = req.body;
@@ -94,6 +119,7 @@ export const deleteUser = async function (req, res) {
     const id = parseInt(req.params.id);
     const { password } = req.body;
     try {
+        console.log('Avant la suppression de l\'utilisateur');
         const user = await UserRecette.findOne({
             where: {
                 id: id
@@ -103,18 +129,23 @@ export const deleteUser = async function (req, res) {
             const match = await bcrypt.compare(password, user.password);
             if (match) {
                 await user.destroy();
-                res.json({ message: 'User supprimée' });
+                return res.status(204).json({ message: 'Utilisateur supprimé avec succès' });
+                console.log('Utilisateur supprimé avec succès');
+
             } else {
-                res.status(401).json({ message: 'Mot de passe incorrect' });
+                console.log('Mot de passe incorrect');
+                return res.status(401).json({ message: 'Mot de passe incorrect' });
             }
         } else {
-            res.status(404).json({ message: 'User non trouvée' });
+            console.log('Utilisateur non trouvé');
+            return res.status(404).json({ message: 'User non trouvée' });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erreur lors de la suppression de l\'user' });
+        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+        return res.status(500).json({ message: 'Erreur lors de la suppression de l\'user' });
     }
 }
+
 
 // changer le role d'un user
 
