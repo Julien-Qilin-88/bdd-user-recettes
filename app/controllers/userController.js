@@ -10,6 +10,7 @@ export const getAllUsers = async function (req, res) {
     try {
         const users = await UserRecette.findAll(
             {
+                attributes: ['id', 'name', 'email', 'role'], // On précise les champs à récupérer
                 order: [['name', 'ASC']] // Tri par ordre alphabétique croissant du champ 'titre'
             }
         );
@@ -76,7 +77,7 @@ export const loginUser = async function (req, res) {
         if (user) {
             const match = await bcrypt.compare(password, user.password);
             if (match) {
-                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '3d' });
+                const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '3d' });
                 res.json({ user, token });
             } else {
                 res.status(401).json({ message: 'Combinaison nom d\'utilisateur/mot de passe incorrecte' });
@@ -119,7 +120,7 @@ export const deleteUser = async function (req, res) {
     const id = parseInt(req.params.id);
     const { password } = req.body;
     try {
-        console.log('Avant la suppression de l\'utilisateur');
+
         const user = await UserRecette.findOne({
             where: {
                 id: id
@@ -173,16 +174,7 @@ export const changeRole = async function (req, res) {
         user.role = role;
         await user.save();
 
-        // Ne renvoyez pas les détails sensibles de l'utilisateur dans la réponse
-        // Vous pouvez créer un objet de réponse avec les informations nécessaires
-        const userResponse = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role
-        };
-
-        return res.status(200).json({ message: 'Rôle utilisateur mis à jour avec succès', user: userResponse });
+        return res.status(200).json({ message: 'Rôle utilisateur mis à jour avec succès' });
     } catch (error) {
         console.error(error);
 
