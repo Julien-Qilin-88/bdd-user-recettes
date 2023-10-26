@@ -7,9 +7,9 @@ POST http://localhost:3001/user/inscription
 Content-Type: application/json
 
 {
-  "name": "user1",
+  "name": "JulienDevWeb",
   "password": "Louislucie1997.",
-  "email": "2toto@toto.fr"
+  "email": "pierratlabollejulien@gmail.com"
 
 }
 
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ### mise à jour d'un user en admin
 
-PUT http://localhost:3001/user/changerole/3
+PUT http://localhost:3001/user/changerole/1
 Content-Type: application/json
 
 {

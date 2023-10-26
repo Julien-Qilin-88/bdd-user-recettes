@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import { comparePasswords } from '../script/bcryptUtils.js';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
 
 dotenv.config();
 
@@ -71,7 +73,7 @@ export const loginUser = async function (req, res) {
     try {
         const user = await UserRecette.findOne({
             where: {
-                name: name
+                name: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('name')), '=', name.toLowerCase())
             }
         });
         if (user) {
